@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-containerized-server-service
+spec:
+  type: NodePort
+  selector:
+    app: go-containerized-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8081
+      nodePort: 30001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: go-containerized-server
+  name: go-containerized-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-containerized-server
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: go-containerized-server
+    spec:
+      containers:
+        - image: go-containerized-server
+          name: go-containerized-server
+          imagePullPolicy: Never
+          resources: {}
+status: {}
